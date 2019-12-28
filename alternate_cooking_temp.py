@@ -36,10 +36,19 @@
 # should be the positive root?
 
 # now plug that back into solve for the lower temp
+# T(t) = 150 - (2*qqq*c1*t + c1^2 + qqq^2*t^2)^(1/3) / (3^(1/3)*(c1 + qqq*t))
+# T(0) = -15 = 150 - (2*qqq*c1*t + c1^2 + qqq^2*t^2)^(1/3) / (3^(1/3)*(c1 + qqq*t))
+# c1 ≈ 7.42039309532422×10^-8
+# T(t) = 75 = 150 - (2*qqq*c1*t + c1^2 + qqq^2*t^2)^(1/3) / (3^(1/3)*(c1 + qqq*t))
+# t = 152 mins. fuck that's definitely wrong!!!!
+
+# try the neg root?
+# t = -522 mins. nope. 
+
+# so radiation isn't the dominant form of heat transfer... fuck. 
 
 
 #### This shit is just plain fucking wrong dumbshit.
-
 # with T_oven = 215.
 # T(t) = c1*exp(-qqq*t) + 215
 # T(0) = -15
