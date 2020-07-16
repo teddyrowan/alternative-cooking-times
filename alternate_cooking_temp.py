@@ -53,11 +53,17 @@ t4 = 90*11.62*10^9/(423^4 - 348^4) = 60.28
 # And for the cold oven is going to be somewhere between 0.82 and 0.63. A decent guess might be 1/3 or halfway into this range so 0.72 to 0.76
 
 # let's redo the math with those approximations (0.86 and 0.74) below.
+# okay so 0.86 of max heat transfer for case 1.
+dQ*20 = Cv*(75+15) = const*((215+273)^4 - (-15+273)^4)*20*0.86
+c1 = Cv/const = 9.9916E9 --- 1/c1 = 1.0008E-10 # this value does fall inside the bounds. good. 
+
+# now plug that into the lower temp over w/ 0.74
+dQ*t = Cv*(75+15) = const*((150+273)^4 - (-15+273)^4)*t*0.74
+t = Cv/const*(90)/((150+273)^4 - (-15+273)^4)/0.74 = 44.05 #44 minutes. hmm. this seems about right. 
 
 
 
-
-# What if we take a numerical DE solution approach instead?
+# What if we take a numerical DE solution approach instead? this should hopefully somewhat line up. 
 
 #So let's Euler's Method this for now. Then swap to RK later on (RK is basically Trapezoidal Euler where Euler is like a LHS Riemman Sum but with derivative approximations)
 dQi/dti = Cv*(T(i+1)-T(i)) = const*(T_s^4 - T(i)^4)
@@ -73,15 +79,18 @@ T(i+2) = T(i+1) + c1*T_s^4 - c1*T(i+1)^4
 T(i+2) = (75+273) = (-15+273) + 2*c1*(215+273)^4 - 2*c1*(-15+273)^4 - c1^5*((215+273)^4 - (-15+273)^4)^4
 #c1 = 8.60754x10^-10 or 1.06499x10^-8 (idk which root to pick?, why are there two?)
 # the units of this c1 are "very" different then of the c1 above. still sketchy though. 
+# ohhhh did i 1/c1 accidentally somewhere?
 
 # ohhh but with big step sizes we lose the ability to find a precise temperature for the colder version.
-# le
+# based on previous approximations we should hit in ther range of T(i+4.5)
 
 
 
 
 
-#### Everything below this didn't work out. Mostly complex-valued solutions not worth the time. There used to be a lot more, but this bit seems fine. 
+
+
+#### Everything below this didn't work out. Mostly complex-valued solutions not worth the time. There used to be a lot more, but this bit seems fine. Did a bunch in Celcius *facepalm* but it still didn't work out in Kelvin. 
 
 # For radiation heat transfer
 dQ/dt = const * (Toven^4 - T^4)
