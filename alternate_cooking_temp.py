@@ -83,8 +83,18 @@ T(i+2) = (75+273) = (-15+273) + 2*c1*(215+273)^4 - 2*c1*(-15+273)^4 - c1^5*((215
 
 # ohhh but with big step sizes we lose the ability to find a precise temperature for the colder version.
 # based on previous approximations we should hit in ther range of T(i+4.5)
+# okay. let's go. 
+T(i+1) = T(i) + c1*(T_s^4 - T(i)^4)
+T(0) = (-15+273) = 258; T_s = (150+273) = 423
+T(1) = 258 + 8.6075*10^-10*(423^4 - 258^4) = 281.74 K --> 8.9 C
+T(2) = (281.74) + 8.6075*10^-10*(423^4 - 271.74^4) = 304.60 K --> 31.6 C
+T(3) = (304.60) + 8.6075*10^-10*(423^4 - 304.60^4) = 324.75 K --> 51.75 C
+T(4) = (324.75) + 8.6075*10^-10*(423^4 - 324.75^4) = 342.73 K --> 69.73 C
+T(5) = (342.73) + 8.6075*10^-10*(423^4 - 342.73^4) = 358.41 K --> 85.41 C
 
-
+# approximate answer = 75 = 69.43*x + 85.41*(1-x) --> x = 0.651
+# T(4.35) ~ 75 C --> 43.5 minutes. # this is an under-estimate of the time due to the declining derivative and the fact that Euler's method uses the initial value of the zone as the rate for the whole step. 
+# would like to extend things to maybe 5 minute steps instead of 10 mins but will make c1 calculation much more annoying. if i can do that programatically though it will be perfect. 
 
 
 
