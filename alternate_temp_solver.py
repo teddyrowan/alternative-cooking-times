@@ -19,9 +19,7 @@ time_orig = 20;
 c1 = (TF-T0)/(pow(TSH,4) - pow(T0,4))/2 # first power of c1 approximation
 #print(c1) #8.60720 e-10
 
-track = []
-track.append(T0)
-
+track = [T0]
 temp = T0
 
 while temp < TF: # basic Euler's Method step-through. 
