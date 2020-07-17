@@ -68,7 +68,8 @@ t = Cv/const*(90)/((150+273)^4 - (-15+273)^4)/0.74 = 44.05 #44 minutes. hmm. thi
 #So let's Euler's Method this for now. Then swap to RK later on (RK is basically Trapezoidal Euler where Euler is like a LHS Riemman Sum but with derivative approximations)
 dQi/dti = Cv*(T(i+1)-T(i)) = const*(T_s^4 - T(i)^4)
 
--- 
+#--  ugh the math for T(i+2) is wrong. see the other file. 
+
 c1 = const/Cv
 T(i+1) = T(i) + c1*(T_s^4 - T(i)^4)
 T(i+2) = T(i+1) + c1*T_s^4 - c1*T(i+1)^4
@@ -84,7 +85,7 @@ T(i+2) = (75+273) = (-15+273) + 2*c1*(215+273)^4 - 2*c1*(-15+273)^4 - c1^5*((215
 # ohhh but with big step sizes we lose the ability to find a precise temperature for the colder version.
 # based on previous approximations we should hit in ther range of T(i+4.5)
 # okay. let's go. 
-T(i+1) = T(i) + c1*(T_s^4 - T(i)^4)
+
 T(0) = (-15+273) = 258; T_s = (150+273) = 423
 T(1) = 258 + 8.6075*10^-10*(423^4 - 258^4) = 281.74 K --> 8.9 C
 T(2) = (281.74) + 8.6075*10^-10*(423^4 - 271.74^4) = 304.60 K --> 31.6 C
