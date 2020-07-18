@@ -1,34 +1,5 @@
 # the math
 
-#codecogs latex aligned by '='
-#https://www.codecogs.com/latex/eqneditor.php
-
-## start euler step example
-
-\begin{align*} 
-
-T(n+i)  &= T(n) + c1*(Ts^4 - T(n)^4)
-
-\\
-
-T(n+2i) &= T(n+i) + c1*(Ts^4 - T(n+i)^4)
-
-\\ 
-
-        &= T(n) + 2*c1*Ts^4 - c1*T(n)^4 - c1*(T(n) + c1*(Ts^4 - T(n)^4))^4
-
-\end{}
-
-## end euler step example
-
-## start approximate c1 example
-
-c1 = 1/2*\frac{T(n+2i) - T(n)}{Ts^4 - T(n)^4}
-
-## end approximate c1 example
-
-
-
 # The Governing Equation:
 # dQ/dt = m*Cv*(dT) = a*(Ts^4 - T^4)
 # This differential equation unfortunately doesn't have a particularly clean solution
@@ -84,7 +55,7 @@ c1 = 1/2*\frac{T(n+2i) - T(n)}{Ts^4 - T(n)^4}
 # Euler's Method in this case is a faster than actual approximation due to the declining nature of the DE.
 
 ## What happens if we use the other root of c1?
-#T(1)   = 258       + 5.6279*10^-9*(423^4 - 258.00^4) = 413.24 K = 140 C  --> basically already converged. 
+#T(1)   = 258       + 5.6279*10^-9*(423^4 - 258.00^4) = 413.24 K = 140 C  --> basically already converged. I think this root must massively overshoot and then come back or something?
 
 ## What happens if we use the approximate solution of c1?
 #T(1)   = 258       + 8.5623*10^-10(423^4 - 258.00^4) = 281.62 K = 8.62  C
@@ -94,3 +65,70 @@ c1 = 1/2*\frac{T(n+2i) - T(n)}{Ts^4 - T(n)^4}
 #T(5)   = 341.77    + 8.5623*10^-10(423^4 - 341.77^4) = 357.50 K = 84.50 C
 # Interpolating 4.39 ==> 44 minutes to cook the chicken @ 300 F instead of 425 F
 # Close enough for an early run. My fear is that this might become an issue as I expand. 
+
+
+## Let's look at a 3rd step for Euler's Method
+# T(n+i)  = T(n) + c1*(Ts^4 - T(n)^4)
+# T(n+2i) = T(n+i) + c1*(Ts^4 - T(n+i)^4)
+#         = T(n) + c1*(Ts^4 - T(n)^4) + c1*(Ts^4 - (T(n) + c1*(Ts^4 - T(n)^4))^4)
+#         = T(n) + 2*c1*Ts^4 - c1*T(n)^4 - c1*(T(n) + c1*(Ts^4 - T(n)^4))^4
+# T(n+2i) ~ T(n) + 2*c1*Ts^4 - 2*c1*T(n)^4
+# T(n+3i) = T(n+2i) + c1*(Ts^4 - T(n+2i)^4)
+#         ~ T(n) + 2*c1*Ts^4 - 2*c1*T(n)^4 + c1*(Ts^4 - [T(n) + 2*c1*Ts^4 - 2*c1*T(n)^4]^4)
+#         ~ T(n) + 2*c1(Ts^4 - T(n)^4) + c1*(Ts^4 - Ts^4)
+#         ~ T(n) + 3*c1(Ts^4 - T(n)^4)
+
+# T(n+ki) ~ T(n) + k*c1(Ts^4 - T(n)^4) ### DAMNNNNNNN
+# c1 ~ 1/n * (T(n+ki)-T(n))/(Ts^4 - T(n)^4) #### THIS IS A GREAT RESULT. This is really big. awesome.. 
+
+
+
+
+
+
+
+
+
+#codecogs latex aligned by '='
+#https://www.codecogs.com/latex/eqneditor.php
+
+## start euler step example
+
+\begin{align*} 
+
+T(n+i)  &= T(n) + c_1*(T_s^4 - T(n)^4)
+
+\\
+
+T(n+2i) &= T(n+i) + c_1*(T_s^4 - T(n+i)^4)
+
+\\ 
+
+        &= T(n) + 2*c_1*T_s^4 - c_1*T(n)^4 - c_1*(T(n) + c_1*(T_s^4 - T(n)^4))^4
+
+\\
+
+T(n+2i) &= T(n) + 2c_1 * (T_s^4 - T(n)^4)) + O(c_1^2)
+
+\\
+
+T(n+ki) &= T(n) + k*c_1*(T_s^4 - T(n)^4) + O(c_1^2)
+
+\end{}
+
+
+## end euler step example
+
+## start approximate c1 example
+
+c1 = 1/2*\frac{T(n+2i) - T(n)}{Ts^4 - T(n)^4}
+
+## end approximate c1 example
+
+
+## start generic c1 euler example
+
+c_1\approx\frac{1}{k}*\frac{T(n+ki)-T(n)}{T_s^4-T(n)^4}
+
+## end generic c1 euler example
+

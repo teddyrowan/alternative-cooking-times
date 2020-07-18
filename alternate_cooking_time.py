@@ -1,11 +1,13 @@
-# alternate_temp_solver.py
-# The actual solver accompagnying alternate_cooking_temp.py
+# alternate_temp_solver.py (python3)
 # Author: Teddy Rowan
 
 import matplotlib.pyplot as plt
 
+# Takes in the intial and final temperatures of the food, the original oven settings, the original cooking time, and the new oven settings and calculates cooking time based on the new settings. All temperatures in Kelvin. Output [time] in the same units as time input.
 def calculate_cook_time(start_temp, end_temp, hot_oven_temp, cold_oven_temp, original_time):
-    c1 = (end_temp-start_temp)/(pow(hot_oven_temp,4) - pow(start_temp,4))/2 # first power of c1 approximation (scale E-10)
+    precision = 100
+
+    c1 = (end_temp-start_temp)/(pow(hot_oven_temp,4) - pow(start_temp,4))/precision
     
     current_temp = start_temp
     temp_history = [current_temp]
@@ -14,12 +16,12 @@ def calculate_cook_time(start_temp, end_temp, hot_oven_temp, cold_oven_temp, ori
         next_temp = current_temp + c1*(pow(cold_oven_temp,4) - pow(current_temp,4))
         temp_history.append(next_temp)
         current_temp = next_temp
-
+    
     interp = (TF - temp_history[-1])/(temp_history[-2] - temp_history[-1])
     steps = (len(temp_history) - 1) - interp
 
-    # now figure out the length of the steps. ie: original cook time / 2  and then multiply by the step size
-    time_total = steps*original_time/2
+    # now figure out the length of the steps. ie: original cook time / precision  and then multiply by the step size
+    time_total = steps*original_time/precision
     return time_total
     
 
@@ -47,7 +49,7 @@ new_time = calculate_cook_time(T0, TF, TSH, TSC, time_orig)
 print("Cook time at alternate temperature: %02d mins." % new_time)
 
 
-## Now let's loop through and find a curve. 
+## Now let's loop through and plot a curve. 
 low = 100 + k_convert;
 high = 500 + k_convert;
 
