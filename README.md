@@ -6,7 +6,7 @@ The package uses the Euler Method to step through the radiative heat transfer PD
 
 ![Temp Demo](./equivalent_cooking_times.PNG "Temp Demo")
 
-### Example Usage
+### Usage Example
 
 Let's examine the simple case of heating frozen chicken strips in the oven. The package I have suggests that at 215°C (425°F) they will take 20 minutes to cook from frozen (-15°C or 5°F). Knowing that the safe cooking temperature of chicken is 75°C (165°F) we will use that as an approximation of the normal final chicken temperature. 
 
