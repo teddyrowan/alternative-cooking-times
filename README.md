@@ -4,7 +4,7 @@ This script calculates alternative cooking times for people who want to use thei
 
 The package uses the Euler Method to step through the radiative heat transfer PDE and approximate the solution. The script also produces a graph of the approximate cooking times for all oven temperatures for the given instructions on the package.
 
-![Temp Demo](./equivalent_cooking_times.png "Temp Demo")
+![Temp Demo](./resources/equivalent_cooking_times.PNG "Temp Demo")
 
 ### Usage Example
 

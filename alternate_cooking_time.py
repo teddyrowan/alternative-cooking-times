@@ -7,11 +7,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # TODO: Option to list safe internal temperatures of meats.
+# TODO: Option to run in Fahrenheit
 
 # Takes in the intial and final temperatures of the food, the original oven settings, the original cooking time, and the new oven settings and calculates cooking time based on the new settings. All temperatures in Kelvin. Output [time] in the same units as time input.
 def calculate_cook_time(start_temp, end_temp, hot_oven_temp, cold_oven_temp, original_time):
+    if cold_oven_temp < end_temp:
+        print("WARNING: The new cooking temperature is too low to cook the food"); exit()
+    if end_temp < start_temp:
+        print("WARNING: Ovens heat food, don't cool them. Check your inputs."); exit()
+    if original_time <= 0:
+        print("WARNING: Ovens are not time machines."); exit()
+    
     step_precision = 100 # how many steps to use in c1 approximation
-
     c1 = (end_temp-start_temp)/(pow(hot_oven_temp,4) - pow(start_temp,4))/step_precision
     
     current_temp = start_temp
@@ -54,7 +61,10 @@ oven_new    = float(input('At what temperature would you like to cook the food i
 
 print("Now calculating new cooking times...")
 new_time = calculate_cook_time(temp_init, temp_final, oven_rec, oven_new, time_rec)
-print("Cook time at alternate temperature: %02d mins." % new_time)
+if (new_time < 1): # for extreme examples like surface of sun.
+    print("Cook time at alternate temperature: " + str(new_time*60) + " seconds.")
+else:
+    print("Cook time at alternate temperature: %02d mins." % new_time)
 
 
 ## Now let's loop through and plot a curve. 
@@ -64,6 +74,9 @@ temp_interval   = 5
 
 temp_list = np.array([])
 time_list = np.array([])
+
+if low < temp_final: # Error catch.
+    low = temp_final + temp_interval
 
 for temp in range(int(low), int(high), temp_interval):
     tmp_time = calculate_cook_time(temp_init, temp_final, oven_rec, temp, time_rec)
