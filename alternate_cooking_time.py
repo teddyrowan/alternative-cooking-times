@@ -1,13 +1,21 @@
-# alternate_cooking_time.py (python3)
-# Author: Teddy Rowan
-# Last Modified: July 19, 2020
-# Description: Numerical PDE solver to calculate alternative cooking times (based on total heat transfer) for different oven temperatures.
+"""
+alternate_cooking_time.py (python3)
+Author: Teddy Rowan
+Last Modified: July 19, 2020
+Description: Numerical PDE solver to calculate alternative cooking times (based on total heat transfer) for different oven temperatures.
 
+TODO: Option to run in Fahrenheit
+TODO: root solve from c1 approximation to find a better approximation using known cooking time as gauge. 
+
+Example Inputs (Frozen Chicken Strips):
+    temp_init  = -15    # 258 K Initial Chicken Temperature
+    temp_final =  75    # 348 K Final Chicken Tmeperature
+    oven_rec   = 215    # 488 K Hot version of the oven
+    time_rec   = 20     # original cooking time [20 minutes]
+    oven_new   = 150    # 423 K Cold version of the oven
+"""
 import matplotlib.pyplot as plt
 import numpy as np
-
-# TODO: Option to list safe internal temperatures of meats.
-# TODO: Option to run in Fahrenheit
 
 # Takes in the intial and final temperatures of the food, the original oven settings, the original cooking time, and the new oven settings and calculates cooking time based on the new settings. All temperatures in Kelvin. Output [time] in the same units as time input.
 def calculate_cook_time(start_temp, end_temp, hot_oven_temp, cold_oven_temp, original_time):
@@ -35,28 +43,44 @@ def calculate_cook_time(start_temp, end_temp, hot_oven_temp, cold_oven_temp, ori
     time_total = steps*original_time/step_precision
     return time_total
     
+# Celcius to Kelvin
+def temp_convert(temp):
+    return temp+273.15
 
-# Example (chicken strips):
-#temp_init  = -15 + k_convert;  # 258 K Initial Chicken Temperature
-#temp_final =  75 + k_convert;  # 348 K Final Chicken Tmeperature
-#oven_rec   = 215 + k_convert;  # 488 K Hot version of the oven
-#time_rec   = 20                # original cooking time. 
-#oven_new   = 150 + k_convert;  # 423 K Cold version of the oven
+# Kelvin to Celcius
+def temp_uncovert(temp):
+    return temp-273.15
 
-k_convert = 273.15;     # conversion from celcius to kelvin
-
+print("Welcome to a guide to alternative cooking times.")
+print("========================================")
+print("Standard Initial Temperatures:")
+print("Frozen:              -15°C  or   5°F")
+print("Refridgerator:         4°C  or  40°F")
+print("Room Temperature:     20°C  or  70°F")
+print("========================================")
+print("Safe Internal Final Temperatures:")
+print("Ground Meat:          75°C  or  165°F")
+print("Chicken:              75°C  or  165°F")
+print("Pork and Ham:         65°C  or  145°F")
+print("Beef / Veal / Lamb:   65°C  or  145°F")
+print("Source: https://www.foodsafety.gov/food-safety-charts/safe-minimum-cooking-temperature")
+print("========================================")
 print("Enter the following values: ")
 
+temp_init   = temp_convert(float(input('Intial temp of the food (freezer ~ -15°C, fridge ~ 0°C) [°C]: ')))
 # The initial temperature of the food. 
-temp_init   = float(input('Intial temperature of the food (freezer ~ -15°C, fridge ~ 0°C) [°C]: ')) + k_convert
+
+temp_final  = temp_convert(float(input('Final temp of the food [°C]: ')))
 # The final temperature of the food when it's done in the oven.
-temp_final  = float(input('Final temperature of the food [°C]: ')) + k_convert
+
+oven_rec    = temp_convert(float(input('Recommended cooking temp for the food [°C]: ')))
 # The recommended cooking temperature
-oven_rec    = float(input('Recommended cooking temperature for the food [°C]: ')) + k_convert
+
+time_rec    = float(input('Recommended cooking time @ previous temp [minutes]: '))
 # The recommended cooking time @ the recommended cooking temperature
-time_rec    = float(input('Recommended cooking time @ previous temperature [minutes]: '))
+
+oven_new    = temp_convert(float(input('At what temp would you like to cook the food instead [°C]: ')))
 # The new temperature that you want to cook the food at
-oven_new    = float(input('At what temperature would you like to cook the food instead [°C]: ')) + k_convert
 
 
 print("Now calculating new cooking times...")
@@ -68,8 +92,8 @@ else:
 
 
 ## Now let's loop through and plot a curve. 
-low             = 100 + k_convert
-high            = 500 + k_convert
+low             = temp_convert(100)
+high            = temp_convert(500)
 temp_interval   = 5
 
 temp_list = np.array([])
@@ -83,7 +107,7 @@ for temp in range(int(low), int(high), temp_interval):
     temp_list = np.append(temp_list, temp)
     time_list = np.append(time_list, tmp_time)
 
-temp_list = [x - k_convert for x in temp_list]
+temp_list = [temp_uncovert(x) for x in temp_list]
 
 fig = plt.figure()
 plt.plot(temp_list, time_list, 'ro-', markersize=3)
