@@ -1,7 +1,7 @@
 """
 alternate_cooking_time.py (python3)
 Author: Teddy Rowan
-Last Modified: July 19, 2020
+Last Modified: Dec 11, 2020
 Description: Numerical PDE solver to calculate alternative cooking times (based on total heat transfer) for different oven temperatures.
 
 TODO: root solve from c1 approximation to find a better approximation using known cooking time as gauge. 
@@ -48,7 +48,7 @@ def temp_convert(temp, type):
     if (type == "C"):
         return (temp + 273.15)
     elif(type == "F"):
-        return ((temp - 32) * 5.0/9 + 237.15)
+        return ((temp - 32) * 5.0/9 + 273.15)
     else:
         print("Invalid Temperature Type. Terminating Program.")
         exit()
